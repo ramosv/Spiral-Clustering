@@ -1,0 +1,70 @@
+PS C:\Users\ramos\Desktop\GitHub\Spiral-Clustering> & c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/.venv/Scripts/python.exe c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/main.py
+Metric: euclidean - Run 1/10
+sum of squared errors: 12313.9002 with random index: 0.5540
+Metric: euclidean - Run 2/10
+sum of squared errors: 13315.0880 with random index: 0.5543
+Metric: euclidean - Run 3/10
+sum of squared errors: 12313.9002 with random index: 0.5540
+Metric: euclidean - Run 4/10
+sum of squared errors: 12288.5133 with random index: 0.5542
+Metric: euclidean - Run 5/10
+sum of squared errors: 12288.5161 with random index: 0.5540
+Metric: euclidean - Run 6/10
+sum of squared errors: 12313.2751 with random index: 0.5543
+Metric: euclidean - Run 7/10
+sum of squared errors: 12313.2751 with random index: 0.5543
+Metric: euclidean - Run 8/10
+sum of squared errors: 12313.2751 with random index: 0.5543
+Metric: euclidean - Run 9/10
+sum of squared errors: 12295.2791 with random index: 0.5543
+Metric: euclidean - Run 10/10
+sum of squared errors: 12313.2751 with random index: 0.5543
+
+best run: 4
+best sum_sqd_error: 12288.5133, best random index: 0.5542
+Metric: cosine - Run 1/10
+sum of squared errors: 0.0943 with random index: 0.5652
+Metric: cosine - Run 2/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 3/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 4/10
+sum of squared errors: 0.0878 with random index: 0.5561
+Metric: cosine - Run 5/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 6/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 7/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 8/10
+sum of squared errors: 0.0878 with random index: 0.5561
+Metric: cosine - Run 9/10
+sum of squared errors: 0.0878 with random index: 0.5562
+Metric: cosine - Run 10/10
+sum of squared errors: 0.0878 with random index: 0.5562
+
+best run: 1
+best sum_sqd_error: 0.0943, best random index: 0.5652
+Metric: l3 - Run 1/10
+sum of squared errors: 11040.1126 with random index: 0.5538
+Metric: l3 - Run 2/10
+sum of squared errors: 11040.1126 with random index: 0.5538
+Metric: l3 - Run 3/10
+sum of squared errors: 11016.0410 with random index: 0.5542
+Metric: l3 - Run 4/10
+sum of squared errors: 11016.0410 with random index: 0.5542
+Metric: l3 - Run 5/10
+sum of squared errors: 11021.9039 with random index: 0.5544
+Metric: l3 - Run 6/10
+sum of squared errors: 11023.5787 with random index: 0.5544
+Metric: l3 - Run 7/10
+sum of squared errors: 11007.7668 with random index: 0.5544
+Metric: l3 - Run 8/10
+sum of squared errors: 11004.2093 with random index: 0.5543
+Metric: l3 - Run 9/10
+sum of squared errors: 11040.1126 with random index: 0.5538
+Metric: l3 - Run 10/10
+sum of squared errors: 11023.5787 with random index: 0.5544
+
+best run: 7
+best sum_sqd_error: 11007.7668, best random index: 0.55
