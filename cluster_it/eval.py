@@ -52,11 +52,13 @@ def sum_of_squared_errors(data, labels, centroids, metric="euclidean"):
             # the only other we support is the L3 norm
             for point in clusters:
                 diff = []
+                
                 for d in range(len(point)):
                     diff.append(abs(point[d] - centroids[i][d]))
                 sum_cubed = 0
                 for d in diff:
                     sum_cubed += d ** 3
+
                 dists.append(sum_cubed ** (1.0 / 3.0))
 
         for d in dists:
