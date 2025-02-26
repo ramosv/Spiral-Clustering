@@ -11,6 +11,7 @@ Completed all required tasks plus some extra
 
 Note: For my k-means implementation, and anything inside the cluster_it component I avoided using numpy operations in key parts to dig dipper into how is it that its working behind the scenes.
 
+Just to see if if I could get better values, I wanted to to test some other algortihms to see if they would perform better when clustering. This code can be found in the extra.py and I added the output to the terminal_output.txt
 
 ramos@Lenovo ~/Desktop/GitHub/Spiral-Clustering (main)
 $ python -m venv .venv

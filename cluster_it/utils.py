@@ -5,8 +5,10 @@ def load_data(file_path):
     true_labels = []
 
     with open(file_path, "r") as file:
+        
         for line in file:
             values = line.strip().split()
+
             if len(values) == 3:
                 data.append([float(values[0]), float(values[1])])
                 true_labels.append(int(values[2]))

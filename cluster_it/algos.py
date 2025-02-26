@@ -5,7 +5,6 @@ import random
 # shource code https://github.com/scikit-learn/scikit-learn/blob/98ed9dc73/sklearn/cluster/_kmeans.py#L1186
 
 def kmeans(data, k=3, max_iter=100, tolerance=1e-4, metric="euclidean"):
-    
     indices = random.sample(range(len(data)), k)
     centroids = []
 
@@ -113,8 +112,6 @@ def compute_distances(data, centroids, distance_metric):
         # I found that they eucledian distance is their default distance metric
 
         if distance_metric == "euclidean":
-            # Euclidean
-
             for j in range(samples):
                 difference = []
                 for d in range(len(data[j])):
@@ -155,6 +152,7 @@ def compute_distances(data, centroids, distance_metric):
                 # sckit learn source code: https://github.com/scikit-learn/scikit-learn/blob/98ed9dc73/sklearn/metrics/pairwise.py#L1686
                 # we do 1e-12 to avoid division by zero, this is just a tiny number to avoid that
                 # I was choked to see that they support over 22 distance metrics
+                
                 normalized_prod = (x_norm * c_norm) + 1e-12
                 cosine_sim = dot_product / normalized_prod
                 
@@ -163,8 +161,7 @@ def compute_distances(data, centroids, distance_metric):
 
         else:
             # l3 distance
-
-            # Anything other than euclidean and cosine will trigger this.
+            # anything other than euclidean and cosine will trigger this.
             for j in range(samples):
                 diff = []
                 for d in range(len(data[j])):
