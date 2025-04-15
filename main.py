@@ -1,14 +1,8 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
-from cluster_it import kmeans,sum_of_squared_errors, random_index, load_data, plot_clusters
+from cluster_it import cut_merge,cophenetic_coef, silhouette_score,plot_dendrogram,compute_centroids,hierarchical_clustering, kmeans,sum_of_squared_errors, random_index, load_data, plot_clusters
 
-def main():
-    plots_dir = Path("plots")
-    plots_dir.mkdir(exist_ok=True)
-    
-    data_file = Path(__file__).parent / "spiral-dataset.csv"
-    data, true_labels = load_data(data_file)
-    
+def test_kmeans(data, true_labels):
     plt.figure(figsize=(8, 6))
     plt.title("Original Spiral")
     
@@ -17,7 +11,7 @@ def main():
     
     plt.xlabel("X")
     plt.ylabel("Y")
-    plt.savefig(plots_dir / "original_dataset.png")
+    plt.savefig(Path("plots") / "original_dataset.png")
     plt.show()
     
     options = ["euclidean", "cosine", "l3"]
@@ -51,8 +45,102 @@ def main():
             plt.figure(figsize=(8, 6))
             plt.title(f"kmeans {run+1} - metric: {option} {sum_sqd_error:.1f} - random index: {random_idx:.1f}")
             plot_clusters(data, predicted, centroids)
-            plt.savefig(plots_dir / f"{option}_{run+1}.png")
+            plt.savefig(Path("plots/part1") / f"{option}_{run+1}.png")
             plt.show()
 
+# hierarchical teting function.
+def test_hierarchical(data, true_labels):
+    metrics = ["euclidean", "cosine", "l3"]
+    linkage_methods = ["single", "complete", "average", "centroid"]
+    
+    best_sse = float("inf")
+    best_ccc = -float("inf")
+    best_sil = -float("inf")
+    best_rii= 0
+    best_run = None
+    runs = 3
+
+    for run in range(runs):
+        for metric in metrics:
+            for linkage in linkage_methods:
+                print(f"Hierarchical: Metric: {metric} | Linkage: {linkage}  | Run {run+1}/{runs}")
+                
+                merge_history = hierarchical_clustering(data, metric=metric, linkage_method=linkage)
+                predicted = cut_merge(len(data), merge_history, k=3)
+
+                centroids = compute_centroids(data, predicted)
+                sse = sum_of_squared_errors(data, predicted, centroids, metric=metric)
+                ri = random_index(true_labels, predicted)
+                ccc = cophenetic_coef(data, merge_history, metric=metric)
+                silhouette = silhouette_score(data, predicted, metric=metric)
+
+                # to save the absolute best run I set up this hirarchical... since we doing hierarchical clustering
+                # cophenetic correlation coefficient is the most important metric to consider,
+                # this is followed by silhouette score, then random index and finally sse.
+                if ccc > best_ccc:
+                    best_ccc = ccc
+                    best_sil = silhouette
+                    best_rii = ri
+                    best_sse = sse
+                    best_run = (run, metric, linkage, predicted)
+
+                elif ccc == best_ccc:
+                    if silhouette > best_sil:
+                        best_sil = silhouette
+                        best_rii = ri
+                        best_sse = sse
+                        best_run = (run, metric, linkage, predicted)
+                        
+                    elif silhouette == best_sil:
+                        if ri > best_rii:
+                            best_rii = ri
+                            best_sse = sse
+                            best_run = (run, metric, linkage, predicted)
+                        
+                        elif ri == best_rii:
+                            if sse < best_sse:
+                                best_sse = sse
+                                best_run = (run, metric, linkage, predicted)
+
+                print(f"Run {run+1} | Metric: {metric}\nLinkage: {linkage}")
+                print(f"SSE: {sse:.4f} | Rand Index: {ri:.4f}")
+                print(f"Cophenetic Corr Coef: {ccc:.4f} | Silhouette: {silhouette:.4f}")
+                print(f"Merges: {len(merge_history)}")
+                
+                plt.figure(figsize=(8, 6))
+                plt.title(f"Hierarchical Clusters (k=3) | Run: {run+1} | {metric}, {linkage}")
+                plot_clusters(data, predicted, centroids)
+                save_path = Path("plots/part2") / f"hierarchical_{run+1}_{metric}_{linkage}.png"
+                plt.savefig(save_path)
+                plt.close()
+
+                plot_dendrogram(merge_history, samples=len(data), path=Path("plots/part2") / f"dendrogram_{run+1}_{metric}_{linkage}.png")
+
+    if best_run is not None:
+        run, metric, linkage, best_labels = best_run
+        print(f"\nBest Hierarchical Run Details:\n")
+        print(f"Run: {run+1} | Metric: {metric} | Linkage: {linkage}")
+        print(f"Best SSE: {best_sse:.4f} | Best Rand Index: {best_rii:.4f}")
+        print(f"Best Cophenetic Corr Coef: {best_ccc:.4f} | Best Silhouette Score: {best_sil:.4f}")
+        
+        plt.figure(figsize=(8, 6))
+        plt.title(f"Best Overall Run: {run+1}, Metric: {metric}, Linkage: {linkage}")
+        best_centroids = compute_centroids(data, best_labels)
+        plot_clusters(data, best_labels, best_centroids)
+        plt.savefig(Path("plots/part2") / f"best_hierarchical_{run+1}_{metric}_{linkage}.png")
+        plt.close()
+
+def main():
+    plots_dir = Path("plots")
+    plots_dir.mkdir(exist_ok=True)
+    
+    data_file = Path(__file__).parent / "spiral-dataset.csv"
+    data, true_labels = load_data(data_file)
+    
+    # Run k-means test.
+    # test_kmeans(data, true_labels)
+    # Run hierarchical clustering test.
+    test_hierarchical(data, true_labels)
+    
 if __name__ == "__main__":
     main()

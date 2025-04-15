@@ -1,4 +1,97 @@
 import random
+
+#part 2, implement hierarchical clustering.
+#refernece: https://scikit-learn.org/stable/modules/clustering.html#id11
+
+"""
+A key difference in hierarchical clustering is that rather than computing the distance between a k number of centroids,
+we use all the points in the dataset to compute the distance between each point and the other points.
+We have a few options for the distance metric, but the ones required in this assignment are:
+- single: minimum distance between points in two clusters
+- complete: maximum distance between points in two clusters
+- average: average distance between points in two clusters
+- centroid: distance between the centroids of two clusters
+"""
+def hierarchical_clustering(data, metric="euclidean", linkage_method="single"):
+
+    clusters = []
+    for i in range(len(data)):
+        clusters.append([i])
+
+    merge_history = []
+
+    while len(clusters) > 1:
+        min_dist = float("inf")
+        to_merge = None
+
+        for i in range(len(clusters)):
+            for j in range(i + 1, len(clusters)):
+                d = compute_distances( data, [clusters[i], clusters[j]], metric, linkage_method,"hierarchical")
+                if d < min_dist:
+                    min_dist = d
+                    to_merge = (i, j)
+
+        i, j = to_merge
+        new_cluster = clusters[i] + clusters[j]
+
+        
+        cluster1 = tuple((clusters[i])) 
+        cluster2 = tuple((clusters[j]))
+        new = tuple(new_cluster)
+        #we use this later for plotting the dendrogram
+        merge_history.append((cluster1, cluster2, min_dist, new))
+
+        # remove the two clusters and add the new one
+        clusters.pop(j)
+        clusters.pop(i)
+        clusters.append(new_cluster)
+
+    return merge_history
+
+def cut_merge(n_samples, merge_history, k):
+
+    clusters = []
+    
+    for i in range(n_samples):
+       clusters.append([i])
+    
+    merge_index = 0
+
+    # iterate until we have k clusters
+    while len(clusters) > k and merge_index < len(merge_history):
+        # the tuples
+        cluster1, cluster2, _, new_cluster = merge_history[merge_index]
+
+        # instanciate the
+        idx1, idx2 = None, None
+        for idx, c in enumerate(clusters):
+            if set(c) == set(cluster1):
+                idx1 = idx
+            elif set(c) == set(cluster2):
+                idx2 = idx
+
+        #  if both found merge
+        if idx1 is not None and idx2 is not None:
+            merged = list(new_cluster)
+            # this is because we are removing the clusters from the list
+            for remove in sorted([idx1, idx2], reverse=True):
+                clusters.pop(remove)
+
+            clusters.append(merged)
+
+        merge_index += 1
+
+    # empty clusters
+    labels = [None] * n_samples
+
+    #populate the labels
+    for id, cluster in enumerate(clusters):
+        for idx in cluster:
+            labels[idx] = id
+
+    return labels
+
+#Part1
 # I took reference from the scikit learn KMeans implementation
 # https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
 # It is a simplified implementtion with half of the parameters of the original implementation
@@ -91,87 +184,149 @@ def kmeans(data, k=3, max_iter=100, tolerance=1e-4, metric="euclidean"):
 
     return labels, centroids
 
-# Again I took reference from the scikit learn KMeans implementation
-# https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
-# They have 3 functions that do something similar to this one
-# fit_predict, fit and fit_transform
-# This is a modification of fit_tranform while also taking the distance metric as a
+"""
+Repurposed function from last assignment to this: so that it support both kmeans and hierarchical clustering
+"""
+def compute_distances(data, centroids, distance_metric=None, linkage=None, clustering="kmeans"):
 
-def compute_distances(data, centroids, distance_metric):
-    # both data and centroids are numpy arrays so we take the first dimension
+    if clustering == "kmeans" and distance_metric is not None and linkage is None:
+        samples = len(data)
+        k = len(centroids)
+        dists = []  
+        
+        for i in range(samples):
+            row = []
+            for j in range(k):
+                row.append(0)
+            dists.append(row)
+        
+        for i in range(k):
+            if distance_metric == "euclidean":
+                for j in range(samples):
+                    sum_squared = 0
+                    for d in range(len(data[j])):
+                        diff = data[j][d] - centroids[i][d]
+                        sum_squared = sum_squared + diff * diff
+                    dists[j][i] = sum_squared ** 0.5
 
-    samples = len(data)
-    k = len(centroids)
-    dists = []
+            elif distance_metric == "cosine":
+                for j in range(samples):
+                    x_norm = 0
+                    for d in range(len(data[j])):
+                        x_norm = x_norm + data[j][d] * data[j][d]
+                    x_norm = x_norm ** 0.5
 
-    for _ in range(samples):
-        dists.append([0] * k)
+                    c_norm = 0
+                    for d in range(len(centroids[i])):
+                        c_norm = c_norm + centroids[i][d] * centroids[i][d]
+                    c_norm = c_norm ** 0.5
 
-    for i in range(k):
-        # looking at sckit learn source code: https://github.com/scikit-learn/scikit-learn/blob/98ed9dc73/sklearn/cluster/_kmeans.py#L1100
-        # I found that they eucledian distance is their default distance metric
+                    dot_product = 0
+                    for d in range(len(data[j])):
+                        dot_product = dot_product + data[j][d] * centroids[i][d]
 
-        if distance_metric == "euclidean":
-            for j in range(samples):
-                difference = []
-                for d in range(len(data[j])):
-                    difference.append(data[j][d] - centroids[i][d])
+                    normalized_prod = (x_norm * c_norm) + 1e-12  # to avoid division by zero
+                    cosine_sim = dot_product / normalized_prod
+                    dists[j][i] = 1 - cosine_sim
 
-                sum_squared = 0
-                for d in difference:
-                    sum_squared += d ** 2
+            elif distance_metric == "l3":
+                for j in range(samples):
+                    sum_cubed = 0
+                    for d in range(len(data[j])):
+                        diff = abs(data[j][d] - centroids[i][d])
+                        sum_cubed = sum_cubed + diff ** 3
+                    dists[j][i] = sum_cubed ** (1.0 / 3.0)
 
-                dists[j][i] = sum_squared ** 0.5
+        return dists
 
-        # for the cosine similarity I took reference from sckit learn again
-        # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.cosine_similarity.html
+    elif clustering == "hierarchical":
+        # In hierarchical mode, we assume that 'centroids' is really a list of clusters,
+        # each represented as a list of indices into the original data.
+        clusters = centroids  # Rename for clarity.
+        if len(clusters) < 2:
+            raise ValueError("Need at least two clusters for hierarchical distance computation.")
+        
+        # For this example, compute the distance only between the first two clusters:
+        cluster1 = clusters[0]
+        cluster2 = clusters[1]
 
-        elif distance_metric == "cosine":
-            # cosine similarity
-            # normalizing the data and centroids
-            # we normalize because we looking for the angle between the two vectors
-            
-            # axis 1 for the columns
-            for j in range(samples):
-                x_norm = 0
-                for d in range(len(data[j])):
-                    x_norm += data[j][d] ** 2
+        if linkage == "single":
+            # Single linkage: minimum distance between any two points (one from each cluster).
+            min_dist = float("inf")
+            for i in range(len(cluster1)):
+                index1 = cluster1[i]
+                for j in range(len(cluster2)):
+                    index2 = cluster2[j]
+                    sum_squared = 0
+                    for d in range(len(data[index1])):
+                        diff = data[index1][d] - data[index2][d]
+                        sum_squared = sum_squared + diff * diff
+                    dist = sum_squared ** 0.5
+                    if dist < min_dist:
+                        min_dist = dist
+            return min_dist
 
-                x_norm = x_norm ** 0.5
+        elif linkage == "complete":
+            max_dist = 0
+            for i in range(len(cluster1)):
+                index1 = cluster1[i]
+                for j in range(len(cluster2)):
+                    index2 = cluster2[j]
+                    sum_squared = 0
+                    for d in range(len(data[index1])):
+                        diff = data[index1][d] - data[index2][d]
+                        sum_squared = sum_squared + diff * diff
+                    dist = sum_squared ** 0.5
+                    if dist > max_dist:
+                        max_dist = dist
+            return max_dist
 
-                c_norm = 0
-                for d in range(len(centroids[i])):
-                    c_norm += centroids[i][d] ** 2
+        elif linkage == "average":
+            total_dist = 0
+            count = 0
+            for i in range(len(cluster1)):
+                index1 = cluster1[i]
+                for j in range(len(cluster2)):
+                    index2 = cluster2[j]
+                    sum_squared = 0
+                    for d in range(len(data[index1])):
+                        diff = data[index1][d] - data[index2][d]
+                        sum_squared = sum_squared + diff * diff
+                    dist = sum_squared ** 0.5
+                    total_dist = total_dist + dist
+                    count = count + 1
+            if count == 0:
+                return 0
+            else:
+                return total_dist / count
 
-                c_norm = c_norm ** 0.5
-                dot_product = 0
+        elif linkage == "centroid":
+            dim = len(data[0])
+            centroid1 = [0.0] * dim
+            centroid2 = [0.0] * dim
 
-                for d in range(len(data[j])):
-                    dot_product += data[j][d] * centroids[i][d]
+            for i in range(len(cluster1)):
+                index1 = cluster1[i]
+                for d in range(dim):
+                    centroid1[d] = centroid1[d] + data[index1][d]
+            for d in range(dim):
+                centroid1[d] = centroid1[d] / len(cluster1)
 
-                # sckit learn source code: https://github.com/scikit-learn/scikit-learn/blob/98ed9dc73/sklearn/metrics/pairwise.py#L1686
-                # we do 1e-12 to avoid division by zero, this is just a tiny number to avoid that
-                # I was choked to see that they support over 22 distance metrics
-                
-                normalized_prod = (x_norm * c_norm) + 1e-12
-                cosine_sim = dot_product / normalized_prod
-                
-                # cosine similarity is 1 - cosine similarity
-                dists[j][i] = 1 - cosine_sim
+            for j in range(len(cluster2)):
+                index2 = cluster2[j]
+                for d in range(dim):
+                    centroid2[d] = centroid2[d] + data[index2][d]
+            for d in range(dim):
+                centroid2[d] = centroid2[d] / len(cluster2)
+
+            sum_squared = 0
+            for d in range(dim):
+                diff = centroid1[d] - centroid2[d]
+                sum_squared = sum_squared + diff * diff
+            return sum_squared ** 0.5
 
         else:
-            # l3 distance
-            # anything other than euclidean and cosine will trigger this.
-            for j in range(samples):
-                diff = []
-                for d in range(len(data[j])):
-                    diff.append(abs(data[j][d] - centroids[i][d]))
+            raise ValueError("Invalid linkage method")
 
-                sum_cubed = 0
-                for d in diff:
-                    sum_cubed += d ** 3
-
-                dists[j][i] = sum_cubed ** (1 / 3)
-
-    # return the distances
-    return dists
+    else:    
+        raise ValueError("Unknown clustering type. Use 'kmeans' or 'hierarchical'.")

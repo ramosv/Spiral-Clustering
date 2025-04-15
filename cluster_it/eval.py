@@ -1,7 +1,11 @@
+import math
+
 # Took reference from the sckit learn base.py where they have s score function which 
 # calculates sum of squared errors
 # https://github.com/scikit-learn/scikit-learn/blob/98ed9dc73/sklearn/base.py#L619
 
+
+# left here from part 1 and for reference
 def sum_of_squared_errors(data, labels, centroids, metric="euclidean"):
     total_sum = 0.0
 
@@ -83,3 +87,194 @@ def random_index(true_labels, predicted):
     # the rand index is the pairs that are either in the same cluster or not
     random_index = count / total_pairs
     return random_index
+
+def compute_centroids(data, labels):
+
+    # find unique clusters using set
+    unique_labels = list(set(labels))
+    centroids = []
+
+    for ul in unique_labels:
+        # get teh points in this cluster
+        points = []
+        for i in range(len(data)):
+            if labels[i] == ul:
+                points.append(data[i])
+
+        # compute mean/centroid 
+        dim = len(data[0])
+        centroid = [0.0] * dim
+
+        for point in points:
+            for d in range(dim):
+                centroid[d] += point[d]
+
+        for d in range(dim):
+            centroid[d] /= len(points)
+
+        centroids.append(centroid)
+
+    return centroids
+
+def compute_distance(p1, p2, metric="euclidean"):
+
+    if metric == "euclidean":
+        euc_sum = 0
+
+        for a, b in zip(p1, p2):
+            euc_sum += (a - b) ** 2
+
+        euc_sqrt = math.sqrt(euc_sum)
+
+        return euc_sqrt
+    
+    elif metric == "cosine":
+        dot = 0
+        sum1 = 0
+        sum2 = 0
+
+        for a, b in zip(p1, p2):
+            dot += a * b
+
+        for a in p1:
+            sum1 += a ** 2
+        
+        for b in p2:
+            sum2 += b ** 2
+
+        norm1 = math.sqrt(sum1)
+        norm2 = math.sqrt(sum2)
+
+        # add small number to avoid division by zero
+        cosine_sim = dot / (norm1 * norm2 + 1e-9)
+        cosine_simmilarity = 1 - cosine_sim
+        
+        return cosine_simmilarity
+    
+    elif metric == "l3":
+        # L3 norm
+        # sum of absolute differences cubed
+        sum_cubed = 0
+        for a, b in zip(p1, p2):
+            sum_cubed += abs(a - b) ** 3
+        
+        l3 = sum_cubed ** (1.0 / 3.0)
+
+        return l3
+    
+    else:
+        raise ValueError("Unsupported metric: %s" % metric)
+
+def silhouette_score(data, labels, metric="euclidean"):
+    # a and b are avg dist to nearby clusters
+    n = len(data)
+    clusters = {}
+
+    for idx, label in enumerate(labels):
+        clusters.setdefault(label, []).append(idx)
+    
+    silhouettes = []
+    
+    for i in range(n):
+        label = labels[i]
+        
+        same_cluster = clusters[label]
+        if len(same_cluster) > 1:
+            sum_distance = 0
+            for j in same_cluster:
+                distance = compute_distance(data[i], data[j], metric)
+                sum_distance += distance   
+            a = sum_distance / len(same_cluster) - 1
+            
+        else:
+            a = 0
+        
+        # b is the lowest avg
+        b = float("inf")
+        for other, indices in clusters.items():
+            if other == label:
+                #self
+                continue
+            sum_distance = 0
+            for j in indices:
+                distance = compute_distance(data[i], data[j], metric)
+                sum_distance += distance
+            avg_distance = sum_distance / len(indices)
+            b = min(b, avg_distance)
+        
+        if max(a, b) > 0:
+            s = (b - a) / max(a, b)
+        else:
+            s = 0
+
+        silhouettes.append(s)
+    
+    silhouettes_sum = sum(silhouettes)/n
+    return silhouettes_sum
+
+def cophenetic_coef(data, merge_history, metric="euclidean"):
+    n = len(data)
+    
+    original_distances = {}
+    for i in range(n):
+        for j in range(i + 1, n):
+            original_distances[(i, j)] = compute_distance(data[i], data[j], metric)
+    
+    # cluster members with their indices as tuples
+    cluster_members = {}
+    for i in range(n):
+        cluster_members[(i,)] = [i]
+
+    cophenetic_distances = {}
+    
+    for merge in merge_history:
+        # print(type(merge))
+        # print(len(merge))
+        cluster1, cluster2, merge_distance, new_cluster = merge
+       
+        members1 = cluster_members[cluster1]
+        members2 = cluster_members[cluster2]
+        new_members = members1 + members2
+        
+        for i in members1:
+            for j in members2:
+                if i < j:
+                    key = (i, j)
+                else:
+                    key = (j, i)
+                
+                cophenetic_distances[key] = merge_distance
+        
+        cluster_members[new_cluster] = new_members
+        
+    originals = []
+    cophenetic = []
+    for key, dist in original_distances.items():
+        originals.append(dist)
+        cophenetic.append(cophenetic_distances.get(key, 0))
+    
+    mean_orig = sum(originals) / len(originals)
+    mean_coph = sum(cophenetic) / len(cophenetic)
+    
+    num = 0
+    for x, y in zip(originals, cophenetic):
+        num += (x - mean_orig) * (y - mean_coph)
+    
+    denominator1 = 0
+    denominator2 = 0
+    for x in originals:
+        denominator1 += (x - mean_orig) ** 2
+
+    for y in cophenetic:
+        denominator2 += (y - mean_coph) ** 2
+    
+    denominator1_sqrt = math.sqrt(denominator1)
+    denominator2_sqrt = math.sqrt(denominator2)
+
+    
+    if denominator1_sqrt * denominator2_sqrt == 0:
+        return 0
+    
+    final = num / (denominator1_sqrt * denominator2_sqrt)
+
+    return final

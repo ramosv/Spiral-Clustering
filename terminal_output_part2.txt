@@ -1,0 +1,224 @@
+PS C:\Users\ramos\Desktop\GitHub\Spiral-Clustering> & c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/.venv/Scripts/python.exe c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/main.py
+Hierarchical: Metric: euclidean | Linkage: single  | Run 1/3
+Run 1 | Metric: euclidean
+Linkage: single
+SSE: 30109.3504 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0757 | Silhouette: 0.0924
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: complete  | Run 1/3
+Run 1 | Metric: euclidean
+Linkage: complete
+SSE: 13004.3742 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5961 | Silhouette: 0.4313
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: average  | Run 1/3
+Run 1 | Metric: euclidean
+Linkage: average
+SSE: 14132.1538 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6109 | Silhouette: 0.4027
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: centroid  | Run 1/3
+Run 1 | Metric: euclidean
+Linkage: centroid
+SSE: 14636.1893 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5759 | Silhouette: 0.3898
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: single  | Run 1/3
+Run 1 | Metric: cosine
+Linkage: single
+SSE: 1.1847 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0357 | Silhouette: 18.6933
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: complete  | Run 1/3
+Run 1 | Metric: cosine
+Linkage: complete
+SSE: 0.1927 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.3627 | Silhouette: 26.8401
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: average  | Run 1/3
+Run 1 | Metric: cosine
+Linkage: average
+SSE: 0.6786 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.2955 | Silhouette: 44.4703
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: centroid  | Run 1/3
+Run 1 | Metric: cosine
+Linkage: centroid
+SSE: 0.3652 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.3622 | Silhouette: 25.4792
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: single  | Run 1/3
+Run 1 | Metric: l3
+Linkage: single
+SSE: 26990.2964 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0755 | Silhouette: 0.0966
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: complete  | Run 1/3
+Run 1 | Metric: l3
+Linkage: complete
+SSE: 11597.9427 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5933 | Silhouette: 0.4347
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: average  | Run 1/3
+Run 1 | Metric: l3
+Linkage: average
+SSE: 12640.2899 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6053 | Silhouette: 0.4039
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: centroid  | Run 1/3
+Run 1 | Metric: l3
+Linkage: centroid
+SSE: 13195.6657 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5723 | Silhouette: 0.3931
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: single  | Run 2/3
+Run 2 | Metric: euclidean
+Linkage: single
+SSE: 30109.3504 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0757 | Silhouette: 0.0924
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: complete  | Run 2/3
+Run 2 | Metric: euclidean
+Linkage: complete
+SSE: 13004.3742 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5961 | Silhouette: 0.4313
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: average  | Run 2/3
+Run 2 | Metric: euclidean
+Linkage: average
+SSE: 14132.1538 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6109 | Silhouette: 0.4027
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: centroid  | Run 2/3
+Run 2 | Metric: euclidean
+Linkage: centroid
+SSE: 14636.1893 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5759 | Silhouette: 0.3898
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: single  | Run 2/3
+Run 2 | Metric: cosine
+Linkage: single
+SSE: 1.1847 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0357 | Silhouette: 18.6933
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: complete  | Run 2/3
+Run 2 | Metric: cosine
+Linkage: complete
+SSE: 0.1927 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.3627 | Silhouette: 26.8401
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: average  | Run 2/3
+Run 2 | Metric: cosine
+Linkage: average
+SSE: 0.6786 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.2955 | Silhouette: 44.4703
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: centroid  | Run 2/3
+Run 2 | Metric: cosine
+Linkage: centroid
+SSE: 0.3652 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.3622 | Silhouette: 25.4792
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: single  | Run 2/3
+Run 2 | Metric: l3
+Linkage: single
+SSE: 26990.2964 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0755 | Silhouette: 0.0966
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: complete  | Run 2/3
+Run 2 | Metric: l3
+Linkage: complete
+SSE: 11597.9427 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5933 | Silhouette: 0.4347
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: average  | Run 2/3
+Run 2 | Metric: l3
+Linkage: average
+SSE: 12640.2899 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6053 | Silhouette: 0.4039
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: centroid  | Run 2/3
+Run 2 | Metric: l3
+Linkage: centroid
+SSE: 13195.6657 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5723 | Silhouette: 0.3931
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: single  | Run 3/3
+Run 3 | Metric: euclidean
+Linkage: single
+SSE: 30109.3504 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0757 | Silhouette: 0.0924
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: complete  | Run 3/3
+Run 3 | Metric: euclidean
+Linkage: complete
+SSE: 13004.3742 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5961 | Silhouette: 0.4313
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: average  | Run 3/3
+Run 3 | Metric: euclidean
+Linkage: average
+SSE: 14132.1538 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6109 | Silhouette: 0.4027
+Merges: 311
+Hierarchical: Metric: euclidean | Linkage: centroid  | Run 3/3
+Run 3 | Metric: euclidean
+Linkage: centroid
+SSE: 14636.1893 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5759 | Silhouette: 0.3898
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: single  | Run 3/3
+Run 3 | Metric: cosine
+Linkage: single
+SSE: 1.1847 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0357 | Silhouette: 18.6933
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: complete  | Run 3/3
+Run 3 | Metric: cosine
+Linkage: complete
+SSE: 0.1927 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.3627 | Silhouette: 26.8401
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: average  | Run 3/3
+Run 3 | Metric: cosine
+Linkage: average
+SSE: 0.6786 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.2955 | Silhouette: 44.4703
+Merges: 311
+Hierarchical: Metric: cosine | Linkage: centroid  | Run 3/3
+Run 3 | Metric: cosine
+Linkage: centroid
+SSE: 0.3652 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.3622 | Silhouette: 25.4792
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: single  | Run 3/3
+Run 3 | Metric: l3
+Linkage: single
+SSE: 26990.2964 | Rand Index: 1.0000
+Cophenetic Corr Coef: 0.0755 | Silhouette: 0.0966
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: complete  | Run 3/3
+Run 3 | Metric: l3
+Linkage: complete
+SSE: 11597.9427 | Rand Index: 0.5537
+Cophenetic Corr Coef: 0.5933 | Silhouette: 0.4347
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: average  | Run 3/3
+Run 3 | Metric: l3
+Linkage: average
+SSE: 12640.2899 | Rand Index: 0.5366
+Cophenetic Corr Coef: 0.6053 | Silhouette: 0.4039
+Merges: 311
+Hierarchical: Metric: l3 | Linkage: centroid  | Run 3/3
+Run 3 | Metric: l3
+Linkage: centroid
+SSE: 13195.6657 | Rand Index: 0.5422
+Cophenetic Corr Coef: 0.5723 | Silhouette: 0.3931
+Merges: 311
+
+Best Hierarchical Run Details:
+
+Run: 1 | Metric: euclidean | Linkage: average
+Best SSE: 14132.1538 | Best Rand Index: 0.5366
+Best Cophenetic Corr Coef: 0.6109 | Best Silhouette Score: 0.4027
+PS C:\Users\ramos\Desktop\GitHub\Spiral-Clustering> 
