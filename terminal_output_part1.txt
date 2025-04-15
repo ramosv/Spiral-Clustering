@@ -68,3 +68,33 @@ sum of squared errors: 11023.5787 with random index: 0.5544
 
 best run: 7
 best sum_sqd_error: 11007.7668, best random index: 0.55
+
+
+PS C:\Users\ramos\Desktop\GitHub\Spiral-Clustering> & c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/.venv/Scripts/python.exe c:/Users/ramos/Desktop/GitHub/Spiral-Clustering/extra.py
+Sklearn DBSCAN Rand Index: 0.8043
+eps=0.5, min_samples=3 => RI=0.5697
+eps=0.5, min_samples=5 => RI=0.4137
+eps=0.5, min_samples=8 => RI=0.3516
+eps=0.5, min_samples=10 => RI=0.3313
+eps=1.0, min_samples=3 => RI=0.9379
+eps=1.0, min_samples=5 => RI=0.5887
+eps=1.0, min_samples=8 => RI=0.4348
+eps=1.0, min_samples=10 => RI=0.4082
+eps=1.5, min_samples=3 => RI=1.0000
+eps=1.5, min_samples=5 => RI=0.8043
+eps=1.5, min_samples=8 => RI=0.5203
+eps=1.5, min_samples=10 => RI=0.4750
+eps=2.0, min_samples=3 => RI=1.0000
+eps=2.0, min_samples=5 => RI=0.9979
+eps=2.0, min_samples=8 => RI=0.6271
+eps=2.0, min_samples=10 => RI=0.5520
+
+best DBSCAN parms:
+  eps=1.5, min_samples=3, Rand Index=1.0000
+Sklearn Spectral Clustering Rand Index: 0.5546
+
+Using nearest_neighbors as the affinity:
+
+Sklearn Spectral Clustering Rand Index: 0.7223
+Sklearn Hierarchical Clustering Rand Index: 0.5520
+PS C:\Users\ramos\Desktop\GitHub\Spiral-Clustering> 
